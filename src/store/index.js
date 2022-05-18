@@ -15,8 +15,16 @@ export default createStore({
     showNavbar: true,
     showFooter: true,
     showMain: true,
+    excelData: [],
+    fileName: "",
   },
   mutations: {
+    setExcelData(state, payload) {
+      state.excelData = payload;
+    },
+    setFileName(state, payload) {
+      state.fileName = payload;
+    },
     toggleConfigurator(state) {
       state.showConfig = !state.showConfig;
     },
@@ -54,5 +62,12 @@ export default createStore({
       commit("sidebarType", payload);
     },
   },
-  getters: {},
+  getters: {
+    getExcelData(state) {
+      return state.excelData;
+    },
+    getFileName(state) {
+      return state.fileName;
+    },
+  },
 });

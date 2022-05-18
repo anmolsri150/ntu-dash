@@ -140,6 +140,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 <script>
 import Card from "@/examples/Cards/Card.vue";

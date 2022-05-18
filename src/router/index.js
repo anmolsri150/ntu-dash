@@ -1,12 +1,11 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Dashboard from "@/views/Dashboard.vue";
 import Tables from "@/views/Tables.vue";
-import Billing from "@/views/Billing.vue";
-import VirtualReality from "@/views/VirtualReality.vue";
 import Profile from "@/views/Profile.vue";
-import Rtl from "@/views/Rtl.vue";
-import SignIn from "@/views/SignIn.vue";
-import SignUp from "@/views/SignUp.vue";
+import polarity from "@/views/polarity.vue";
+import sentiment from "@/views/sentiment.vue";
+import concept from "@/views/concept.vue";
+import emotion from "@/views/emotion.vue";
 
 const routes = [
   {
@@ -18,6 +17,26 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
+  },
+  {
+    path: "/polarity",
+    name: "Polarity",
+    component: polarity,
+  },
+  {
+    path: "/sentiment",
+    name: "Sentiment",
+    component: sentiment,
+  },
+  {
+    path: "/concept",
+    name: "Concept",
+    component: concept,
+  },
+  {
+    path: "/emotions",
+    name: "Emotions",
+    component: emotion,
   },
   {
     path: "/upload",

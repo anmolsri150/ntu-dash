@@ -15,7 +15,6 @@
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
             <a
               id="iconNavbarSidenav"
-              href="#"
               class="p-0 nav-link text-body"
               @click="toggleSidebar"
             >
@@ -32,7 +31,6 @@
   </nav>
 </template>
 <script>
-import Breadcrumbs from "../Breadcrumbs.vue";
 import { mapMutations, mapActions } from "vuex";
 
 export default {

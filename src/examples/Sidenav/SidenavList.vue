@@ -12,6 +12,34 @@
         </sidenav-collapse>
       </li>
       <li class="nav-item">
+        <sidenav-collapse nav-text="Polarity" :to="{ name: 'Polarity' }">
+          <template #icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse nav-text="Sentiment" :to="{ name: 'Sentiment' }">
+          <template #icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse nav-text="Concept" :to="{ name: 'Concept' }">
+          <template #icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
+        <sidenav-collapse nav-text="Emotions" :to="{ name: 'Emotions' }">
+          <template #icon>
+            <icon name="dashboard" />
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item">
         <sidenav-collapse nav-text="Upload" :to="{ name: 'Upload' }">
           <template #icon>
             <icon name="tables" />

@@ -6,14 +6,8 @@
     :data-color="sidenavActiveBgColors"
   >
     <div class="sidenav-header">
-      <i
-        id="iconSidenav"
-        class="top-0 p-3 cursor-pointer fas fa-times text-secondary opacity-5 position-absolute end-0 d-none d-xl-none"
-        aria-hidden="true"
-      ></i>
       <a class="m-0 navbar-brand" href="/">
-        <img :src="logo" class="navbar-brand-img h-100" alt="main_logo" />
-        <span class="ms-1 font-weight-bold">Vite Soft UI Dashboard</span>
+        <span class="ms-1 font-weight-bold">Visualization Dashboard</span>
       </a>
     </div>
     <hr class="mt-0 horizontal dark" />

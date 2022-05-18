@@ -20,39 +20,14 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: "/tables",
-    name: "Tables",
+    path: "/upload",
+    name: "Upload",
     component: Tables,
   },
   {
-    path: "/billing",
-    name: "Billing",
-    component: Billing,
-  },
-  {
-    path: "/virtual-reality",
-    name: "Virtual Reality",
-    component: VirtualReality,
-  },
-  {
-    path: "/profile",
-    name: "Profile",
+    path: "/documentation",
+    name: "Documentation",
     component: Profile,
-  },
-  {
-    path: "/rtl-page",
-    name: "Rtl",
-    component: Rtl,
-  },
-  {
-    path: "/sign-in",
-    name: "Sign In",
-    component: SignIn,
-  },
-  {
-    path: "/sign-up",
-    name: "Sign Up",
-    component: SignUp,
   },
 ];
 

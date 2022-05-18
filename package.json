@@ -1,8 +1,7 @@
 {
-  "name": "vite-soft-ui-dashboard",
+  "name": "ntu-dashboard",
   "private": true,
   "version": "1.0.0",
-  "author": "Creative Tim (https://www.creative-tim.com/)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

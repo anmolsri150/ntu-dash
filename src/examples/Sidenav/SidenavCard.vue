@@ -20,7 +20,10 @@
       <div v-else class="docs-info">
         <h6 class="mb-0 text-white up">{{ textPrimary }}</h6>
         <p class="text-xs font-weight-bold">{{ textSecondary }}</p>
-        <a :href="href" target="_blank" class="mb-0 btn btn-white btn-sm w-100">{{ linkText }}</a>
+        <router-link :to="href" v-bind="$attrs">
+          <div class="mb-0 btn btn-white btn-sm w-100">{{ linkText }}</div>
+        </router-link>
+<!--        <a :href="href" target="_blank" class="mb-0 btn btn-white btn-sm w-100">{{ linkText }}</a>-->
       </div>
     </div>
   </div>
@@ -39,8 +42,8 @@ export default {
       default: ""
     },
     href: {
-      type: String,
-      default: ""
+      type: Object,
+      default: {}
     },
     linkText: {
       type: String,

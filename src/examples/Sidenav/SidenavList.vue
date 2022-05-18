@@ -14,28 +14,28 @@
       <li class="nav-item">
         <sidenav-collapse nav-text="Polarity" :to="{ name: 'Polarity' }">
           <template #icon>
-            <icon name="dashboard" />
+            <icon name="switches" />
           </template>
         </sidenav-collapse>
       </li>
       <li class="nav-item">
         <sidenav-collapse nav-text="Sentiment" :to="{ name: 'Sentiment' }">
           <template #icon>
-            <icon name="dashboard" />
+            <icon name="temperature" />
           </template>
         </sidenav-collapse>
       </li>
       <li class="nav-item">
         <sidenav-collapse nav-text="Concept" :to="{ name: 'Concept' }">
           <template #icon>
-            <icon name="dashboard" />
+            <icon name="customer-support" />
           </template>
         </sidenav-collapse>
       </li>
       <li class="nav-item">
         <sidenav-collapse nav-text="Emotions" :to="{ name: 'Emotions' }">
           <template #icon>
-            <icon name="dashboard" />
+            <icon name="getting-started" />
           </template>
         </sidenav-collapse>
       </li>

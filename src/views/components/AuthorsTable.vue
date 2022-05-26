@@ -50,7 +50,7 @@
                     href="javascript:;"
                     class="text-secondary font-weight-bold text-xs"
                     @click="toggleExcelData(x.name)"
-                >Disable</a>
+                >{{ x.status ? "Disable" : "Enable" }}</a>
               </td>
               <td class="align-middle">
                 <a
@@ -143,6 +143,8 @@ export default {
         let res = [];
         // eslint-disable-next-line no-unused-vars
         let positive = 0;
+        let minDate = null;
+        let maxDate = null;
         sheet.forEach((row) => {
           if (row.Concept) {
             // eslint-disable-next-line no-inner-declarations
@@ -161,7 +163,15 @@ export default {
             positive++;
           }
           if (row.Date) {
-            row.Date = dayjs(row.Date).format('YYYY-MM-DD');
+            row.Date = dayjs(row.Date.slice(0, 10));
+            if (!minDate) {
+              minDate = row.Date;
+              maxDate = row.Date;
+            } else {
+              if (row.Date.isBefore(minDate)) minDate = row.Date;
+              if (row.Date.isAfter(maxDate)) maxDate = row.Date;
+            }
+            row.Date = row.Date.format('YYYY-MM-DD');
           }
           delete row.Text;
           res.push(row);
@@ -169,12 +179,15 @@ export default {
         let storeObj = {
           name: f.name.split('.xlsx')[0],
           date: dayjs().format('YYYY-MM-DD'),
+          minDate,
+          maxDate,
           status: true,
           count: res.length,
           data: res,
         }
         vm.addExcelData(storeObj);
         vm.isFileUpload = false;
+        vm.files = [];
       };
       await reader.readAsArrayBuffer(f);
     }

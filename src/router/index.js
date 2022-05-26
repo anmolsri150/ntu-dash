@@ -7,6 +7,8 @@ import sentiment from "@/views/sentiment.vue";
 import concept from "@/views/concept.vue";
 import emotion from "@/views/emotion.vue";
 
+import store from "../store";
+
 const routes = [
   {
     path: "/",
@@ -54,6 +56,13 @@ const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes,
   linkActiveClass: "active",
+});
+
+router.beforeEach((to, from) => {
+  let keys = Object.keys(store.state.excelData).filter(key => store.state.excelData[key].status);
+  if (keys.length === 0 && to.name !== 'Upload') {
+    return { name: 'Upload' }
+  }
 });
 
 export default router;

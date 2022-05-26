@@ -2,12 +2,11 @@
   <div class="py-4 container-fluid">
     <div class="row">
       <div class="col-12">
-        <authors-table />
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <projects-table />
+        <authors-table />
       </div>
     </div>
   </div>

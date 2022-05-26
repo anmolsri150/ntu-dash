@@ -15,12 +15,18 @@ export default createStore({
     showNavbar: true,
     showFooter: true,
     showMain: true,
-    excelData: [],
+    excelData: {},
     fileName: "",
   },
   mutations: {
-    setExcelData(state, payload) {
-      state.excelData = payload;
+    addExcelData(state, payload) {
+      state.excelData[payload.name] = payload;
+    },
+    removeExcelData(state, payload) {
+      delete state.excelData[payload];
+    },
+    toggleExcelData(state, payload) {
+      state.excelData[payload].status = !state.excelData[payload].status;
     },
     setFileName(state, payload) {
       state.fileName = payload;
@@ -64,7 +70,10 @@ export default createStore({
   },
   getters: {
     getExcelData(state) {
-      return state.excelData;
+      return Object.values(state.excelData);
+    },
+    getExcelDataSingle(state, payload) {
+      return state.excelData[payload];
     },
     getFileName(state) {
       return state.fileName;

@@ -1,235 +1,113 @@
 <template>
   <div class="card mb-4">
     <div class="card-header pb-0">
-      <h6>Authors table</h6>
+      <div class="d-flex flex-row justify-content-between">
+        <h6>Uploaded Files table</h6>
+        <vsud-button :color="isFileUpload ? 'danger' : 'secondary'" size="sm" @click="isFileUpload = !isFileUpload">{{isFileUpload ? "Cancel" : "Add New"}}</vsud-button>
+      </div>
     </div>
-    <div class="card-body px-0 pt-0 pb-2">
+
+    <div v-if="!isFileUpload" class="card-body px-0 pt-2 pb-2">
       <div class="table-responsive p-0">
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Author</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
               <th
                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >Function</th>
+              >Date of Upload</th>
+              <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+              >Num Entries</th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
               >Status</th>
-              <th
-                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >Employed</th>
+              <th class="text-secondary opacity-7"></th>
               <th class="text-secondary opacity-7"></th>
             </tr>
           </thead>
           <tbody>
+          <template v-if="getExcelData.length" v-for="x in getExcelData" :key="x">
             <tr>
               <td>
                 <div class="d-flex px-2 py-1">
                   <div>
-                    <vsud-avatar :img="img1" size="sm" border-radius="lg" class="me-3" alt="user1" />
-                  </div>
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">John Michael</h6>
-                    <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
+                    <h6 class="mb-0 text-sm">{{ x.name }}</h6>
                   </div>
                 </div>
               </td>
               <td>
-                <p class="text-xs font-weight-bold mb-0">Manager</p>
-                <p class="text-xs text-secondary mb-0">Organization</p>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <vsud-badge color="success" variant="gradient" size="sm">Online</vsud-badge>
+                <span class="text-secondary text-xs font-weight-bold">{{ x.date }}</span>
               </td>
               <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
+                <span class="text-secondary text-xs font-weight-bold">{{ x.count }}</span>
+              </td>
+              <td class="align-middle text-center text-sm">
+                <vsud-badge :color="x.status ? 'success' : 'danger'" variant="gradient" size="sm">{{ x.status ? "Enabled" : "Disabled" }}</vsud-badge>
               </td>
               <td class="align-middle">
                 <a
-                  href="javascript:;"
-                  class="text-secondary font-weight-bold text-xs"
-                  data-toggle="tooltip"
-                  data-original-title="Edit user"
-                >Edit</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <div>
-                    <vsud-avatar :img="img2" class="me-3" size="sm" border-radius="lg" alt="user2" />
-                  </div>
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Alexa Liras</h6>
-                    <p class="text-xs text-secondary mb-0">alexa@creative-tim.com</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p class="text-xs font-weight-bold mb-0">Programator</p>
-                <p class="text-xs text-secondary mb-0">Developer</p>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <vsud-badge color="secondary" variant="gradient" size="sm">Offline</vsud-badge>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">11/01/19</span>
+                    href="javascript:;"
+                    class="text-secondary font-weight-bold text-xs"
+                    @click="toggleExcelData(x.name)"
+                >Disable</a>
               </td>
               <td class="align-middle">
                 <a
-                  href="javascript:;"
-                  class="text-secondary font-weight-bold text-xs"
-                  data-toggle="tooltip"
-                  data-original-title="Edit user"
-                >Edit</a>
+                    href="javascript:;"
+                    class="text-secondary font-weight-bold text-xs"
+                    @click="removeExcelData(x.name)"
+                >Remove</a>
               </td>
             </tr>
-            <tr>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <div>
-                    <vsud-avatar :img="img3" size="sm" border-radius="lg" class="me-3" alt="user3" />
-                  </div>
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Laurent Perrier</h6>
-                    <p class="text-xs text-secondary mb-0">laurent@creative-tim.com</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p class="text-xs font-weight-bold mb-0">Executive</p>
-                <p class="text-xs text-secondary mb-0">Projects</p>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <vsud-badge color="success" variant="gradient" size="sm">Online</vsud-badge>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">19/09/17</span>
-              </td>
-              <td class="align-middle">
-                <a
-                  href="javascript:;"
-                  class="text-secondary font-weight-bold text-xs"
-                  data-toggle="tooltip"
-                  data-original-title="Edit user"
-                >Edit</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <div>
-                    <vsud-avatar :img="img4" class="me-3" size="sm" border-radius="lg" alt="user4" />
-                  </div>
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Michael Levi</h6>
-                    <p class="text-xs text-secondary mb-0">michael@creative-tim.com</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p class="text-xs font-weight-bold mb-0">Programator</p>
-                <p class="text-xs text-secondary mb-0">Developer</p>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <vsud-badge color="success" variant="gradient" size="sm">Online</vsud-badge>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">24/12/08</span>
-              </td>
-              <td class="align-middle">
-                <a
-                  href="javascript:;"
-                  class="text-secondary font-weight-bold text-xs"
-                  data-toggle="tooltip"
-                  data-original-title="Edit user"
-                >Edit</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <div>
-                    <vsud-avatar :img="img5" class="me-3" size="sm" border-radius="lg" alt="user5" />
-                  </div>
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Richard Gran</h6>
-                    <p class="text-xs text-secondary mb-0">richard@creative-tim.com</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p class="text-xs font-weight-bold mb-0">Manager</p>
-                <p class="text-xs text-secondary mb-0">Executive</p>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <vsud-badge color="secondary" variant="gradient" size="sm">Offline</vsud-badge>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">04/10/21</span>
-              </td>
-              <td class="align-middle">
-                <a
-                  href="javascript:;"
-                  class="text-secondary font-weight-bold text-xs"
-                  data-toggle="tooltip"
-                  data-original-title="Edit user"
-                >Edit</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="d-flex px-2 py-1">
-                  <div>
-                    <vsud-avatar :img="img6" class="me-3" size="sm" border-radius="lg" alt="user6" />
-                  </div>
-                  <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm">Miriam Eric</h6>
-                    <p class="text-xs text-secondary mb-0">miriam@creative-tim.com</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p class="text-xs font-weight-bold mb-0">Programtor</p>
-                <p class="text-xs text-secondary mb-0">Developer</p>
-              </td>
-              <td class="align-middle text-center text-sm">
-                <vsud-badge color="secondary" variant="gradient" size="sm">Offline</vsud-badge>
-              </td>
-              <td class="align-middle text-center">
-                <span class="text-secondary text-xs font-weight-bold">14/09/20</span>
-              </td>
-              <td class="align-middle">
-                <a
-                  href="javascript:;"
-                  class="text-secondary font-weight-bold text-xs"
-                  data-toggle="tooltip"
-                  data-original-title="Edit user"
-                >Edit</a>
-              </td>
-            </tr>
+          </template>
+          <div class="p-4" v-else>
+            Please add a file!
+          </div>
           </tbody>
         </table>
       </div>
+    </div>
+    <div v-else class="card-body px-0 pt-4 pb-0">
+      <file-selector v-model="files">
+        <dropzone v-slot="{ hovered }">
+          <div
+              class="block w-full h-64 rounded-lg border-4 border-radius-xl border-dashed border-gray-400 transition-colors duration-150 d-flex flex-column space-y-4 justify-content-center items-center"
+              :class="{ 'border-blue-200': hovered }"
+              style="height: 200px;"
+          >
+            <dialog-button class="buttonn">
+              <vsud-button size="sm">Add New</vsud-button></dialog-button
+            >
+          </div>
+        </dropzone>
+      </file-selector>
     </div>
   </div>
 </template>
 
 <script>
-import VsudAvatar from "@/components/VsudAvatar.vue";
 import VsudBadge from "@/components/VsudBadge.vue";
+import VsudButton from "@/components/VsudButton.vue";
+import { FileSelector, Dropzone, DialogButton } from "vue3-file-selector";
 import img1 from "../../assets/img/team-2.jpg";
 import img2 from "../../assets/img/team-3.jpg";
 import img3 from "../../assets/img/team-4.jpg";
 import img4 from "../../assets/img/team-3.jpg";
 import img5 from "../../assets/img/team-2.jpg";
 import img6 from "../../assets/img/team-4.jpg";
+import * as XLSX from 'xlsx';
+import dayjs from "dayjs";
+import {mapGetters, mapMutations} from "vuex";
 
 export default {
   name: "AuthorsTable",
   components: {
-    VsudAvatar,
+    FileSelector,
+    Dropzone,
+    DialogButton,
     VsudBadge,
+    VsudButton
   },
   data() {
     return {
@@ -239,7 +117,73 @@ export default {
       img4,
       img5,
       img6,
+      files: [],
+      isFileUpload: false,
     };
   },
+  computed: {
+    ...mapGetters(["getExcelData"])
+  },
+  methods: {
+    ...mapMutations(["addExcelData", "removeExcelData", "toggleExcelData"]),
+  },
+  watch: {
+    async files() {
+      const vm = this;
+      if (this.files.length === 0) return;
+      const f = this.files[0];
+      const reader = new FileReader();
+      reader.onload = async function (e) {
+        let data = e.target.result;
+        /* reader.readAsArrayBuffer(file) -> data will be an ArrayBuffer */
+        let workbook = XLSX.read(data);
+        let sheet_name_list = workbook.SheetNames;
+        if (sheet_name_list.length === 0) return;
+        let sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+        let res = [];
+        // eslint-disable-next-line no-unused-vars
+        let positive = 0;
+        sheet.forEach((row) => {
+          if (row.Concept) {
+            // eslint-disable-next-line no-inner-declarations
+            function replaceAll(str, find, replace) {
+              var escapedFind = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+              return str.replace(new RegExp(escapedFind, 'g'), replace);
+            }
+
+            row.Concept = replaceAll(row.Concept, "NOT", "");
+            row.Concept = JSON.parse(row.Concept.replace(/'/g, '"'));
+          }
+          if (row.Emotions) {
+            row.Emotions = row.Emotions.split(', ');
+          }
+          if (row.Sentiment && row.Sentiment === "POSITIVE") {
+            positive++;
+          }
+          if (row.Date) {
+            row.Date = dayjs(row.Date).format('YYYY-MM-DD');
+          }
+          res.push(row);
+        })
+        let storeObj = {
+          name: f.name.split('.xlsx')[0],
+          date: dayjs().format('YYYY-MM-DD'),
+          status: true,
+          count: res.length,
+          data: res,
+        }
+        vm.addExcelData(storeObj);
+        vm.isFileUpload = false;
+      };
+      await reader.readAsArrayBuffer(f);
+    }
+  }
 };
 </script>
+
+<style>
+  .buttonn {
+    border: white!important;
+    background: rgba(0,0,0,0)!important;
+  }
+</style>

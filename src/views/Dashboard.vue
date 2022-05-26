@@ -50,11 +50,10 @@
             <div class="row">
               <div class="col-lg-6">
                 <div class="d-flex flex-column h-100">
-                  <p class="mb-1 pt-2 text-bold">Built by developers</p>
-                  <h5 class="font-weight-bolder">Vite Soft UI Dashboard</h5>
+                  <p class="mb-1 pt-2 text-bold">Visualize Metrics</p>
+                  <h5 class="font-weight-bolder">Tweets Visualizer</h5>
                   <p class="mb-5">
-                    From colors, cards, typography to complex elements, you will
-                    find the full documentation.
+                    Analyze data across dates, find out the impact of a certain event through time.
                   </p>
                   <a
                     class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto"
@@ -103,11 +102,10 @@
               class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3"
             >
               <h5 class="text-white font-weight-bolder mb-4 pt-2">
-                Work with the rockets
+                Want to use your own data?
               </h5>
               <p class="text-white">
-                Wealth creation is an evolutionarily recent positive-sum game.
-                It is all about who take the opportunity first.
+                Checkout the notebooks for instructions to get scrape and get data in the correct format.
               </p>
               <a
                 class="text-white text-sm font-weight-bold mb-0 icon-move-right mt-auto"

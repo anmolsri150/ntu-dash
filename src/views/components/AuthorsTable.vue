@@ -163,6 +163,7 @@ export default {
           if (row.Date) {
             row.Date = dayjs(row.Date).format('YYYY-MM-DD');
           }
+          delete row.Text;
           res.push(row);
         })
         let storeObj = {

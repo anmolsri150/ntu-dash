@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import dayjs from "dayjs";
 
 export default createStore({
   state: {
@@ -75,8 +76,31 @@ export default createStore({
     getExcelDataSingle(state, payload) {
       return state.excelData[payload];
     },
+    getFormattedDataSingle(state, payload) {
+      const data = state.excelData[payload];
+      const dateMap = {};
+      data.forEach(row => {
+        const key = dayjs(row.Date).format("YYYY-MM");
+        if (key in dateMap) {
+          dateMap[key].push(row);
+        } else {
+          dateMap[key] = [row];
+        }
+      })
+      const res = [];
+
+      // merge data
+      dateMap.keys().forEach(key => {
+
+      })
+
+      return res;
+    },
     getFileName(state) {
       return state.fileName;
     },
+    getDataKeys(state) {
+      return state.excelData.keys();
+    }
   },
 });

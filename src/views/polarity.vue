@@ -3,66 +3,49 @@
     <div class="row">
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <card
-          :title="stats.money.title"
-          :value="stats.money.value"
-          :percentage="stats.money.percentage"
-          :icon-class="stats.money.iconClass"
-          :icon-background="stats.iconBackground"
-          direction-reverse
+            :title="stats.money.title"
+            :value="stats.money.value"
+            :percentage="stats.money.percentage"
+            :icon-class="stats.money.iconClass"
+            :icon-background="stats.iconBackground"
+            direction-reverse
         ></card>
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <card
-          :title="stats.users.title"
-          :value="stats.users.value"
-          :percentage="stats.users.percentage"
-          :icon-class="stats.users.iconClass"
-          :icon-background="stats.iconBackground"
-          direction-reverse
+            :title="stats.users.title"
+            :value="stats.users.value"
+            :percentage="stats.users.percentage"
+            :icon-class="stats.users.iconClass"
+            :icon-background="stats.iconBackground"
+            direction-reverse
         ></card>
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <card
-          :title="stats.clients.title"
-          :value="stats.clients.value"
-          :percentage="stats.clients.percentage"
-          :icon-class="stats.clients.iconClass"
-          :icon-background="stats.iconBackground"
-          :percentage-color="stats.clients.percentageColor"
-          direction-reverse
+            :title="stats.clients.title"
+            :value="stats.clients.value"
+            :percentage="stats.clients.percentage"
+            :icon-class="stats.clients.iconClass"
+            :icon-background="stats.iconBackground"
+            :percentage-color="stats.clients.percentageColor"
+            direction-reverse
         ></card>
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0">
         <card
-          :title="stats.sales.title"
-          :value="stats.sales.value"
-          :percentage="stats.sales.percentage"
-          :icon-class="stats.sales.iconClass"
-          :icon-background="stats.iconBackground"
-          direction-reverse
+            :title="stats.sales.title"
+            :value="stats.sales.value"
+            :percentage="stats.sales.percentage"
+            :icon-class="stats.sales.iconClass"
+            :icon-background="stats.iconBackground"
+            direction-reverse
         ></card>
-      </div>
-    </div>
-    <div class="row">
-      <div class="mb-4 col-lg-5 mb-lg-0">
-        <div class="card z-index-2">
-          <div class="p-3 card-body">
-            <!-- chart -->
-            <active-users-chart />
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-7">
-        <!-- line chart -->
-        <div class="card z-index-2">
-          <gradient-line-chart />
-        </div>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-12">
           <template v-for="x in getExcelData"  v-if="getExcelData.length" :key="x">
-            {{x.data.length}}
             <div id="polarity"></div>
           </template>
       </div>
@@ -70,14 +53,10 @@
   </div>
 </template>
 <script>
-import Card from "@/examples/Cards/Card.vue";
-import ActiveUsersChart from "@/examples/Charts/ActiveUsersChart.vue";
-import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-import OrdersCard from "./components/OrdersCard.vue";
-import ProjectsCard from "./components/ProjectsCard.vue";
 import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
+import Card from "@/examples/Cards/Card.vue";
 import BR from "../assets/img/icons/flags/BR.png";
 import {mapGetters} from "vuex";
 import Plotly from "plotly.js-dist";
@@ -86,8 +65,6 @@ export default {
   name: "DashboardDefault",
   components: {
     Card,
-    ActiveUsersChart,
-    GradientLineChart,
   },
 
   data() {
@@ -165,7 +142,8 @@ export default {
             y:item.data.map((obj)=>obj.polarity),
             x:this.getFormattedData.keys ,
             mode: 'lines+markers',
-            name: item.label
+            name: item.label,
+            connectgaps: true
         })
         });
         return datasets;
@@ -178,7 +156,18 @@ export default {
   watch : {
     polarities(obj){
       let layout = {
-        title:'Adding Names to Line and Scatter Plot'
+        title:'Adding Names to Line and Scatter Plot',
+        xaxis: {
+          autorange: true,
+          range: ['2020-01-01', '2021-04-01'],
+          rangeslider: {range: ['2020-01-01', '2021-04-01']},
+          type: 'date'
+        },
+        yaxis: {
+          autorange: true,
+          range: [-1,1],
+          type: 'linear'
+        }
       };
 
       Plotly.update('polarity', obj, layout);
@@ -186,42 +175,19 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.getExcelData[0].data[0].Polarity)
-    // // console.log(this.polarities)
-    // // for(const item in this.getFormattedData){
-    // //   var tempTrace= {
-    // //     x:[1,2,3,4],
-    // //     y:[1,2,3,4],
-    // //     mode: 'lines+markers',
-    // //     name: item.data.name
-    // //   }
-    // //   this.trace.append(tempTrace);
-    // // }
-    // var trace1 = {
-    //   x: [1, 2, 3, 4],
-    //   y: [10, 15, 13, 17],
-    //   mode: 'lines+markers',
-    //   name: 'Scatter'
-    // };
-    //
-    // var trace2 = {
-    //   x: [2, 3, 4, 5],
-    //   y: [16, 5, 11, 9],
-    //   mode: 'lines',
-    //   name: 'Lines'
-    // };
-    //
-    // const trace3 = {
-    //   x: [1, 2, 3, 4],
-    //   y: [12, 9, 15, 12],
-    //   mode: 'lines+markers',
-    //   name: 'Scatter + Lines'
-    // };
-    //
-    // var data = polar;
-
-    var layout = {
-      title:'Adding Names to Line and Scatter Plot'
+    let layout = {
+      title:'Polarity Graphs for Certain Keywords in Tweets',
+      xaxis: {
+        autorange: true,
+        range: ['2020-01-01', '2021-04-01'],
+        rangeslider: {range: ['2020-01-01', '2021-04-01']},
+        type: 'date'
+      },
+      yaxis: {
+        autorange: true,
+        range: [-1,1],
+        type: 'linear'
+      }
     };
 
     Plotly.newPlot('polarity', this.polarities, layout);

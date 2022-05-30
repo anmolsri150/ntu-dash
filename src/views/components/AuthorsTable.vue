@@ -27,7 +27,7 @@
             </tr>
           </thead>
           <tbody>
-          <template v-if="getExcelData.length" v-for="x in getExcelData" :key="x">
+          <template v-for="x in getExcelData" v-if="getExcelData.length" :key="x">
             <tr>
               <td>
                 <div class="d-flex px-2 py-1">
@@ -61,7 +61,7 @@
               </td>
             </tr>
           </template>
-          <div class="p-4" v-else>
+          <div v-else class="p-4">
             Please add a file!
           </div>
           </tbody>

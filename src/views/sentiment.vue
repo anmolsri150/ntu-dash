@@ -44,43 +44,36 @@
       </div>
     </div>
     <div class="row">
-      <div class="mb-4 col-lg-5 mb-lg-0">
-        <div class="card z-index-2">
-          <div class="p-3 card-body">
-            <!-- chart -->
-            <active-users-chart />
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-7">
-        <!-- line chart -->
-        <div class="card z-index-2">
-          <gradient-line-chart />
-        </div>
+      <div class="col-lg-12">
+        <template v-for="x in getExcelData"  v-if="getExcelData.length" :key="x">
+          <h1>Positive Sentiment Aggregation for a Particular date</h1>
+          <div id="polarityPositive"></div>
+          <h1>Negative Sentiment Aggregation for a Particular date</h1>
+          <div id="polarityNegative"></div>
+        </template>
+
       </div>
     </div>
   </div>
 </template>
 <script>
 import Card from "@/examples/Cards/Card.vue";
-import ActiveUsersChart from "@/examples/Charts/ActiveUsersChart.vue";
-import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-import OrdersCard from "./components/OrdersCard.vue";
-import ProjectsCard from "./components/ProjectsCard.vue";
 import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
-
+import {mapGetters} from "vuex";
+import Plotly from "plotly.js-dist";
 export default {
   name: "DashboardDefault",
   components: {
     Card,
-    ActiveUsersChart,
-    GradientLineChart,
   },
+
   data() {
     return {
+      val: {},
+      trace: [],
       stats: {
         iconBackground: "bg-gradient-success",
         money: {
@@ -141,5 +134,96 @@ export default {
       },
     };
   },
+  computed:{
+    ...mapGetters(['getExcelData','getFormattedData']),
+    polarities (){
+      if(this.getFormattedData &&  this.getFormattedData.datasets && this.getFormattedData.datasets.length>0){
+        let datasetsP = [];
+        let datasetsN = [];
+        let datasets=[];
+        this.getFormattedData.datasets.forEach((item)=>{
+          datasetsP.push(
+              {
+                y:item.data.map((obj)=>obj.sentiment.positive),
+                x:this.getFormattedData.keys ,
+                mode: 'lines',
+                name: item.label + 'positive',
+                connectgaps: true
+              });
+          datasetsN.push(
+              {
+                y:item.data.map((obj)=>obj.sentiment.negative),
+                x:this.getFormattedData.keys ,
+                mode: 'lines',
+                name: item.label + 'negative',
+                connectgaps: true
+              })
+        });
+        datasets.push(datasetsP);
+        datasets.push(datasetsN);
+        return datasets;
+      }
+      return [];
+    },
+
+
+  },
+  watch : {
+    polarities(obj){
+      let layout = {
+        title:'Adding Names to Line and Scatter Plot',
+        xaxis: {
+          autorange: true,
+          range: ['2020-01-01', '2021-04-01'],
+          rangeslider: {range: ['2020-01-01', '2021-04-01']},
+          type: 'date'
+        },
+        yaxis: {
+          autorange: true,
+          range: [-1,1],
+          type: 'linear',
+          line: {
+            color:'#ff2351',
+            dash: 'solid',
+            width: 4,
+          }
+        }
+      };
+
+      Plotly.update('polarityPositive', obj[0], layout);
+      Plotly.update('polarityNegative', obj[1], layout);
+
+    }
+  },
+  mounted() {
+    let layout = {
+      xaxis: {
+        autorange: true,
+        range: ['2020-01-01', '2021-04-01'],
+        rangeslider: {range: ['2020-01-01', '2021-04-01']},
+        type: 'date'
+      },
+      yaxis: {
+        autorange: true,
+        range: [-1,1],
+        type: 'linear',
+        line: {
+          color:'rgba(115,115,115,1)',
+          dash: 'solid',
+          width: 4,
+        }
+      }
+    };
+    Plotly.newPlot('polarityPositive', this.polarities[0], layout);
+    Plotly.newPlot('polarityNegative', this.polarities[1], layout);
+  },
+  methods:{
+  }
+
 };
 </script>
+<style scoped>
+h1{
+  font-size: 1.8rem;
+}
+</style>

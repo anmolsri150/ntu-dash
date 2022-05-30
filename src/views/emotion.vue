@@ -44,18 +44,17 @@
       </div>
     </div>
     <div class="row">
-      <div class="mb-4 col-lg-5 mb-lg-0">
-        <div class="card z-index-2">
-          <div class="p-3 card-body">
-            <!-- chart -->
-            <active-users-chart />
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-7">
+      <div class="col-lg-12">
         <!-- line chart -->
         <div class="card z-index-2">
-          <gradient-line-chart />
+          <WordCloud
+              :data="data"
+              nameKey="name"
+              valueKey="value"
+              :color="['#1f77b4']"
+              :show-tooltip="true"
+              :word-click="wordClickHandler">
+          </WordCloud>
         </div>
       </div>
     </div>
@@ -63,21 +62,18 @@
 </template>
 <script>
 import Card from "@/examples/Cards/Card.vue";
-import ActiveUsersChart from "@/examples/Charts/ActiveUsersChart.vue";
-import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-import OrdersCard from "./components/OrdersCard.vue";
-import ProjectsCard from "./components/ProjectsCard.vue";
 import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
+import {mapGetters} from "vuex";
+import WordCloud from '@/views/components/WordCloud.vue';
 
 export default {
   name: "DashboardDefault",
   components: {
     Card,
-    ActiveUsersChart,
-    GradientLineChart,
+    WordCloud,
   },
   data() {
     return {
@@ -140,6 +136,53 @@ export default {
         },
       },
     };
+  },
+  computed:{
+    ...mapGetters(['getExcelData','getFormattedData']),
+    data (){
+      if(this.getFormattedData &&  this.getFormattedData.datasets && this.getFormattedData.datasets.length>0){
+        let datasets = [];
+        this.getFormattedData.datasets.forEach((item)=> {
+          // let dataset = [];
+          let mp = {};
+          item.data.forEach(it => {
+            Object.keys(it.emotions).forEach(em => {
+              if (em in mp) {
+                mp[em] += it.emotions[em];
+              } else {
+                mp[em] = it.emotions[em];
+              }
+            })
+          })
+          Object.keys(mp).forEach(em => {
+            datasets.push({
+              name: em,
+              value: mp[em]
+            })
+          });
+          // datasets.push(dataset);
+        });
+        return datasets;
+      }
+      return [];
+    }
+
+
+  },
+  watch : {
+    // polarities(obj){
+    //   let layout = {
+    //     title:'Adding Names to Line and Scatter Plot'
+    //   };
+    //
+    //   Plotly.update('polarity', obj, layout);
+    //
+    // }
+  },
+  methods: {
+    wordClickHandler(name, value, vm) {
+      console.log('wordClickHandler', name, value, vm);
+    }
   },
 };
 </script>

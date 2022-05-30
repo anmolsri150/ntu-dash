@@ -3,50 +3,58 @@
     <div class="row">
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <card
-          :title="stats.money.title"
-          :value="stats.money.value"
-          :percentage="stats.money.percentage"
-          :icon-class="stats.money.iconClass"
-          :icon-background="stats.iconBackground"
-          direction-reverse
+            :title="stats.money.title"
+            :value="stats.money.value"
+            :percentage="stats.money.percentage"
+            :icon-class="stats.money.iconClass"
+            :icon-background="stats.iconBackground"
+            direction-reverse
         ></card>
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <card
-          :title="stats.users.title"
-          :value="stats.users.value"
-          :percentage="stats.users.percentage"
-          :icon-class="stats.users.iconClass"
-          :icon-background="stats.iconBackground"
-          direction-reverse
+            :title="stats.users.title"
+            :value="stats.users.value"
+            :percentage="stats.users.percentage"
+            :icon-class="stats.users.iconClass"
+            :icon-background="stats.iconBackground"
+            direction-reverse
         ></card>
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
         <card
-          :title="stats.clients.title"
-          :value="stats.clients.value"
-          :percentage="stats.clients.percentage"
-          :icon-class="stats.clients.iconClass"
-          :icon-background="stats.iconBackground"
-          :percentage-color="stats.clients.percentageColor"
-          direction-reverse
+            :title="stats.clients.title"
+            :value="stats.clients.value"
+            :percentage="stats.clients.percentage"
+            :icon-class="stats.clients.iconClass"
+            :icon-background="stats.iconBackground"
+            :percentage-color="stats.clients.percentageColor"
+            direction-reverse
         ></card>
       </div>
       <div class="col-xl-3 col-sm-6 mb-xl-0">
         <card
-          :title="stats.sales.title"
-          :value="stats.sales.value"
-          :percentage="stats.sales.percentage"
-          :icon-class="stats.sales.iconClass"
-          :icon-background="stats.iconBackground"
-          direction-reverse
+            :title="stats.sales.title"
+            :value="stats.sales.value"
+            :percentage="stats.sales.percentage"
+            :icon-class="stats.sales.iconClass"
+            :icon-background="stats.iconBackground"
+            direction-reverse
         ></card>
       </div>
     </div>
     <div class="row">
-      <div class="card z-index-2">
-        <div class="p-3 card-body">
-          gg
+      <div class="col-lg-12">
+        <!-- line chart -->
+        <div class="card z-index-2">
+          <WordCloud
+              :data="data"
+              nameKey="name"
+              valueKey="value"
+              :color="['#1f77b4']"
+              :show-tooltip="true"
+              :word-click="wordClickHandler">
+          </WordCloud>
         </div>
       </div>
     </div>
@@ -54,21 +62,18 @@
 </template>
 <script>
 import Card from "@/examples/Cards/Card.vue";
-import ActiveUsersChart from "@/examples/Charts/ActiveUsersChart.vue";
-import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-import OrdersCard from "./components/OrdersCard.vue";
-import ProjectsCard from "./components/ProjectsCard.vue";
 import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
+import {mapGetters} from "vuex";
+import WordCloud from '@/views/components/WordCloud.vue';
 
 export default {
   name: "DashboardDefault",
   components: {
     Card,
-    ActiveUsersChart,
-    GradientLineChart,
+    WordCloud,
   },
   data() {
     return {
@@ -131,6 +136,49 @@ export default {
         },
       },
     };
+  },
+  computed:{
+    ...mapGetters(['getExcelData','getFormattedData']),
+    data (){
+      if(this.getFormattedData &&  this.getFormattedData.datasets && this.getFormattedData.datasets.length>0){
+        let datasets = [];
+        this.getFormattedData.datasets.forEach((item)=> {
+          let mp = {};
+          item.data.forEach(it => {
+            Object.keys(it.concept).forEach(em => {
+              if (em in mp) {
+                mp[em] += it.concept[em];
+              } else {
+                mp[em] = it.concept[em];
+              }
+            })
+          })
+          Object.keys(mp).forEach(em => {
+            datasets.push({
+              name: em,
+              value: mp[em]
+            })
+          });
+        });
+        return datasets;
+      }
+      return [];
+    }
+  },
+  watch : {
+    // polarities(obj){
+    //   let layout = {
+    //     title:'Adding Names to Line and Scatter Plot'
+    //   };
+    //
+    //   Plotly.update('polarity', obj, layout);
+    //
+    // }
+  },
+  methods: {
+    wordClickHandler(name, value, vm) {
+      console.log('wordClickHandler', name, value, vm);
+    }
   },
 };
 </script>

@@ -150,6 +150,8 @@ import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
+import {mapGetters} from "vuex";
+
 
 export default {
   name: "DashboardDefault",
@@ -157,6 +159,9 @@ export default {
     Card,
     ActiveUsersChart,
     GradientLineChart,
+  },
+  computed:{
+    ...mapGetters(['getExcelData'])
   },
   data() {
     return {
@@ -220,5 +225,6 @@ export default {
       },
     };
   },
+
 };
 </script>

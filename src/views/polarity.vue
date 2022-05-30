@@ -59,6 +59,14 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-lg-12">
+          <template v-for="x in getExcelData"  v-if="getExcelData.length" :key="x">
+            {{x.data.length}}
+            <div id="polarity"></div>
+          </template>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -71,6 +79,8 @@ import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
+import {mapGetters} from "vuex";
+import Plotly from "plotly.js-dist";
 
 export default {
   name: "DashboardDefault",
@@ -79,8 +89,11 @@ export default {
     ActiveUsersChart,
     GradientLineChart,
   },
+
   data() {
     return {
+      val: {},
+      trace: [],
       stats: {
         iconBackground: "bg-gradient-success",
         money: {
@@ -141,5 +154,86 @@ export default {
       },
     };
   },
+  computed:{
+    ...mapGetters(['getExcelData','getFormattedData']),
+   polarities (){
+      if(this.getFormattedData &&  this.getFormattedData.datasets && this.getFormattedData.datasets.length>0){
+        let datasets = [];
+        this.getFormattedData.datasets.forEach((item)=>{
+          datasets.push(
+          {
+            y:item.data.map((obj)=>obj.polarity),
+            x:this.getFormattedData.keys ,
+            mode: 'lines+markers',
+            name: item.label
+        })
+        });
+        return datasets;
+      }
+      return [];
+   }
+
+
+  },
+  watch : {
+    polarities(obj){
+      let layout = {
+        title:'Adding Names to Line and Scatter Plot'
+      };
+
+      Plotly.update('polarity', obj, layout);
+
+    }
+  },
+  mounted() {
+    // console.log(this.getExcelData[0].data[0].Polarity)
+    // // console.log(this.polarities)
+    // // for(const item in this.getFormattedData){
+    // //   var tempTrace= {
+    // //     x:[1,2,3,4],
+    // //     y:[1,2,3,4],
+    // //     mode: 'lines+markers',
+    // //     name: item.data.name
+    // //   }
+    // //   this.trace.append(tempTrace);
+    // // }
+    // var trace1 = {
+    //   x: [1, 2, 3, 4],
+    //   y: [10, 15, 13, 17],
+    //   mode: 'lines+markers',
+    //   name: 'Scatter'
+    // };
+    //
+    // var trace2 = {
+    //   x: [2, 3, 4, 5],
+    //   y: [16, 5, 11, 9],
+    //   mode: 'lines',
+    //   name: 'Lines'
+    // };
+    //
+    // const trace3 = {
+    //   x: [1, 2, 3, 4],
+    //   y: [12, 9, 15, 12],
+    //   mode: 'lines+markers',
+    //   name: 'Scatter + Lines'
+    // };
+    //
+    // var data = polar;
+
+    var layout = {
+      title:'Adding Names to Line and Scatter Plot'
+    };
+
+    Plotly.newPlot('polarity', this.polarities, layout);
+  },
+  methods:{
+  }
+
 };
 </script>
+<style>
+  #polarity{
+
+  }
+
+</style>

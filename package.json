@@ -29,7 +29,6 @@
     "vue-plotly": "^1.1.0",
     "vue-resize-directive": "^1.2.0",
     "vue-router": "^4.0.14",
-    "vue-word-cloud": "git+https://github.com/pdsuwwz/vue-word-cloud",
     "vue-wordcloud": "^1.1.1",
     "vue3-daterange-picker": "^1.0.0",
     "vue3-file-selector": "^1.0.3",
